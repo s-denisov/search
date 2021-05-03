@@ -1,7 +1,8 @@
-function pageRank(updatePage) {
+async function pageRank(updatePage) {
   const DAMPING_FACTOR = 0.85;
   const ITERATIONS = 20;
   const ranking = [];
+  const files = await findFiles();
   for (const fileName in files) {
     const fileData = {name: fileName, rank: 1, outboundLinks: []};
     const linkTextList = files[fileName].split("<a href=");
@@ -39,12 +40,14 @@ function pageRank(updatePage) {
     }
   }
   if (updatePage) document.getElementById("pagerank-working").innerHTML = output;
-  return ranking;
+
+  // CHecks if result is valid by finding sum of page ranks at end and comparing with at start
+  let totalRank = 0
+  for (const fileData of ranking) {
+    totalRank += fileData.rank 
+  }
+  console.log(totalRank, ranking.length);
+
+  return [ranking, files];
 }
-/* checks that ranking is valid by checking sum of ranks is the same at the start and end
-let totalRank = 0
-for (const fileData of ranking) {
-  totalRank += fileData.rank 
-}
-console.log(totalRank, ranking.length);
-*/
+

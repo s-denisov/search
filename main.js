@@ -1,4 +1,4 @@
-function findModifiedFile(fileName) {
+function findModifiedFile(files, fileName) {
   return files[fileName].replace(/<.*?>/g, "");
 }
 
@@ -18,14 +18,16 @@ function indexesOf(text, search) {
   return results;
 }
 
-function submitSearch(event) {
+async function submitSearch(event) {
   event.preventDefault();
   const searchText = document.getElementById("search-text").value;
   if (searchText == "") return;
-  const ranking = pageRank(false);
+  const pageRankResults = await pageRank(false);
+  const ranking = pageRankResults[0];
+  const files = pageRankResults[1];
   const results = [];
   for (const fileName in files) {
-    const indexes = indexesOf(findModifiedFile(fileName), searchText);
+    const indexes = indexesOf(findModifiedFile(files, fileName), searchText);
     let result = "";
     if (indexes.length != 0) result += `<li><a href=${fileName}>${fileName}</a></li>`;
     for (startingIndex of indexes) {
@@ -34,8 +36,8 @@ function submitSearch(event) {
           let i = Math.min(0, direction);
           let keywordToMark = direction == 1;
           while (true) {
-            if (startingIndex + i >= findModifiedFile(fileName).length || startingIndex + i < 0) break;
-            const char = findModifiedFile(fileName)[startingIndex + i]; 
+            if (startingIndex + i >= findModifiedFile(files, fileName).length || startingIndex + i < 0) break;
+            const char = findModifiedFile(files, fileName)[startingIndex + i]; 
             if (keywordToMark && !simplifyString(searchText).includes(simplifyString(sample + char))) {
               sample = `<b>${sample}</b>`;
               keywordToMark = false;

@@ -42,9 +42,12 @@ const fileNames =
 , 'web_development.html'
 ];
 
-const files = {};
-for (const fileName of fileNames) {
-  fetch(`https://s-denisov.github.io/search/${fileName}`).then(response => response.text().then(htmlText => {
+async function findFiles() {
+  const files = {};
+  for (const fileName of fileNames) {
+    const response = await fetch(`https://s-denisov.github.io/search/${fileName}`);
+    const htmlText = await response.text(); 
     files[fileName] = htmlText;
-  }))
+  }
+  return files;
 }
