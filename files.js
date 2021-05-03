@@ -1,4 +1,4 @@
-const files = {'back_end_development.html': `<h1>Back-end development</h1>
+/*const files = {'back_end_development.html': `<h1>Back-end development</h1>
 Back-end development is developing the code for a website that runs on the server. It, for examplee, saves data in a database. A variety of programming languages can be used such as <a href="./javascript.html">JavaScript</a>, <a href="./python.html">Python</a> and <a href="./java.html">Java</a> by using web <dfn>frameworks</dfn>.`,
 'cpp.html': `<h1>C++</h1>
 C++ is a <a href="./programming_language.html">programming language</a> designed as an extenstion of the C programming language, most importantly adding object-oriented programming. It is low-level, requiring manual memory management and having a weak type system. <a href="java.html">Java</a> has been designed as a more high-level alternative to C++, improving developer experience but running slower.`,
@@ -26,3 +26,25 @@ A programming language is a way to give instructions to a computer by using text
 Python is a <a href="./interpreted_language.html">interpreted</a> <a href="./programming_language.html">programming language</a>. It attempts to be easy to read and understand by, for example, using indentation instead of curly braces, being dynamically typed and having a large number of built-in functions. It can be used for <a href="./back_end_development.html">back-end development</a> by using a framework such as Django.`,
 'web_development.html': `<h1>Web development</h1>
 Web development is the work involved in developing a Web site for the Internet. It consists of <a href="front_end_development.html">front end</a> and <a href="back_end_development.html">back end</a> development.`};
+*/
+
+const fileNames =
+[ 'back_end_development.html'
+, 'cpp.html'
+, 'css.html'
+, 'front_end_development.html'
+, 'html.html'
+, 'interpreted_language.html'
+, 'java.html'
+, 'javascript.html'
+, 'programming_language.html'
+, 'python.html'
+, 'web_development.html'
+];
+
+const files = {};
+for (const fileName of fileNames) {
+  fetch(`https://s-denisov.github.io/search/${fileName}`).then(response => response.text().then(htmlText => {
+    files[fileName] = htmlText;
+  }))
+}
